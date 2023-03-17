@@ -16,8 +16,7 @@ void test_t::update_on_finish(std::chrono::milliseconds _duration, RESULT _resul
 std::ostream &operator<<(std::ostream &os, const test_t &test) {
     os << "id=" << test.id << ", name='" << test.name << "', dur=" << test.duration.count() << ", result=" << test.testResult;
     if (!test.errorText.empty())
-        os << ", error='" << test.errorText << "',";
-    os << "\n";
+        os << ", error='" << test.errorText << "'";
     return os;
 }
 }  // namespace aggregator

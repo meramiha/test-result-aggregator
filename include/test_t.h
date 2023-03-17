@@ -7,7 +7,7 @@ enum RESULT { SUCCESS,
               UNKNOWN };
 
 class test_t {
-private:
+public:
     uint32_t id;
     std::string name;
     std::chrono::milliseconds duration;
