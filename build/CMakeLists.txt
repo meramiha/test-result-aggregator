@@ -5,4 +5,4 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 include_directories(../include)
-add_executable (aggregator ../src/test.cpp ../src/main.cpp)
+add_executable (aggregator ../src/test_t.cpp ../src/main.cpp)
