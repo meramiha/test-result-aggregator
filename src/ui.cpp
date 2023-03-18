@@ -6,8 +6,6 @@
 namespace aggregator {
 
 void ui::print_test_header(WINDOW *win, int y, int x) {
-    init_pair(3, -1, COLOR_CYAN);
-
     wattrset(win, COLOR_PAIR(3));
     for (int i = 1; i < width - 1; ++i) {
         mvwprintw(win, y, i, "%s", " ");
@@ -51,52 +49,68 @@ void ui::print_test(WINDOW *win, int y, int x, const test_t &t) {
 
 ui::ui(aggregator &_a)
     : a(_a) {
+    // INIT
     initscr();
     noecho();
-
-    getmaxyx(stdscr, height, width);
-    WINDOW *tests_table = newwin(height - 10, width, 0, 0);
-    box(tests_table, 0, 0);
-    mvwprintw(tests_table, 0, 1, "Tests");
-
-    WINDOW *filters = newwin(10, width - 40, height - 10, 0);
-    box(filters, 0, 0);
-    mvwprintw(filters, 0, 1, "Filters");
-
-    WINDOW *summery = newwin(10, 40, height - 10, width - 40);
-    box(summery, 0, 0);
-    mvwprintw(summery, 0, 1, "Summery");
 
     start_color();
     use_default_colors();
 
     init_pair(1, COLOR_RED, -1);
     init_pair(2, COLOR_GREEN, -1);
-
-    int y = 1, x = 2;
-
-    print_test_header(tests_table, y++, x);
-    for (auto test : a.get_tests()) {
-        print_test(tests_table, y++, x, test);
-    }
-
+    init_pair(3, -1, COLOR_CYAN);
+    getmaxyx(stdscr, height, width);
     if (!freopen("/dev/tty", "r", stdin)) {
         perror("/dev/tty");
         exit(1);
     }
+    cbreak();
+    keypad(stdscr, true);
+    // INIT
+
+    WINDOW *tests_table = newwin(height - 10, width, 0, 0);
+    box(tests_table, 0, 0);
+    mvwprintw(tests_table, 0, 1, "Tests");
+
+    WINDOW *filters = newwin(9, width - 40, height - 10, 0);
+    box(filters, 0, 0);
+    mvwprintw(filters, 0, 1, "Filters");
+
+    WINDOW *summery = newwin(9, 40, height - 10, width - 40);
+    box(summery, 0, 0);
+    mvwprintw(summery, 0, 1, "Summery");
+
+    int y = 1, x = 2;
+
+    print_test_header(tests_table, y++, x);
+    for (auto test : a.get_tests())
+        print_test(tests_table, y++, x, test);
 
     refresh();
     wrefresh(tests_table);
     wrefresh(filters);
     wrefresh(summery);
-    cbreak();
-    keypad(stdscr, true);
 
+    int mypadpos = 0;
     int ch;
-    while ((ch = getch()) != KEY_F(1)) {
+    while (ch = wgetch(win1); ch != 'q' || ch != KEY_F(10)) {
+        switch (ch) {
+            case KEY_UP:
+                if (mypadpos >= 0)
+                    mypadpos--;
+
+                prefresh(win1, mypadpos, 0, 0, 0, maxy, maxx);
+                break;
+
+            case KEY_DOWN:
+                if (mypadpos <= rowcount + 1)
+                    mypadpos++;
+
+                prefresh(win1, mypadpos, 0, 0, 0, maxy - 1, maxx);
+                break;
+        }
     }
 
-    // deallocates memory and ends ncurses
     endwin();
 }
 
