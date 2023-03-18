@@ -10,6 +10,9 @@ aggregator::aggregator(std::unordered_map<uint32_t, test_t> &tests) {
         this->tests.push_back(test);
     }
 }
+const std::vector<test_t> &aggregator::get_tests() {
+    return this->tests;
+}
 // std::ranges::filter_view<> aggregator::filter() {
 //     auto k = this->tests | std::views::filter([](const test_t &test) {
 //                  return test.testResult == 0;

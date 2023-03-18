@@ -8,6 +8,7 @@ class aggregator {
 public:
     aggregator(std::unordered_map<uint32_t, test_t> &);
     aggregator(std::unordered_map<uint32_t, test_t> &&);
+    const std::vector<test_t> &get_tests();
     // int filter()
 private:
     std::vector<test_t> tests;

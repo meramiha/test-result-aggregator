@@ -1,3 +1,4 @@
+#include <ncurses.h>
 #include <exception>
 #include <iostream>
 #include <regex>
@@ -7,6 +8,14 @@
 #include <utility>
 #include "aggregator.h"
 #include "test_t.h"
+#include "ui.h"
+
+//
+#include <fcntl.h>
+#include <ncurses.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
 
 #define deb(x) std::cerr << #x << " = " << x << std::endl;
 
@@ -28,4 +37,6 @@ int main() {
     }
 
     aggregator::aggregator a(aggregator::tests);
+
+    aggregator::ui gui(a);
 }
