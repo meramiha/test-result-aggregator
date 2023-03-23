@@ -7,12 +7,12 @@ namespace aggregator {
 class ui {
 public:
     ui(aggregator &);
-    void print_test(WINDOW *win, int y, int x, const test_t &t);
-    void print_test_header(WINDOW *win, int y, int x);
+    aggregator::SORT_OPTION select_sort();
 
 private:
-    uint32_t height;
-    uint32_t width;
+    void init();
+    int32_t height;
+    int32_t width;
     aggregator &a;
 };
 }  // namespace aggregator

@@ -2,23 +2,22 @@
 #include <chrono>
 #include <string>
 namespace aggregator {
-enum RESULT { SUCCESS,
-              FAIL,
-              UNKNOWN };
+enum TEST_RESULT { FAIL = 1,
+                   SUCCESS = 2,
+                   UNKNOWN = 4 };
 
 class test_t {
 public:
     uint32_t id;
     std::string name;
     std::chrono::milliseconds duration;
-    RESULT testResult;
+    TEST_RESULT testResult;
     std::string errorText;
 
 public:
     test_t() = default;
     test_t(uint32_t, std::string);
-    [[maybe_unused]] test_t(uint32_t, std::chrono::milliseconds, RESULT, std::string);
-    void update_on_finish(std::chrono::milliseconds, RESULT, std::string);
+    void update_on_finish(std::chrono::milliseconds, TEST_RESULT, std::string);
     friend std::ostream &operator<<(std::ostream &os, const test_t &test);
 };
 };  // namespace aggregator

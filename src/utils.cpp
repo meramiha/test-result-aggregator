@@ -18,7 +18,7 @@ void start_test(std::string id, std::string name) {
     tests[_id] = test_t(_id, name);
 }
 void finish_test(std::string id, std::string duration, std::string result, std::string errText) {
-    static std::unordered_map<std::string, RESULT> table = {
+    static std::unordered_map<std::string, TEST_RESULT> table = {
         {"SUCCESS", SUCCESS},
         {"FAIL", FAIL},
         {"UNKNOWN", UNKNOWN},
@@ -26,7 +26,7 @@ void finish_test(std::string id, std::string duration, std::string result, std::
 
     uint32_t _id = std::stoull(id);
     auto _duration = std::chrono::milliseconds(std::stoull(duration));
-    RESULT _result = table[result];
+    TEST_RESULT _result = table[result];
     if (!tests.contains(_id))
         throw std::runtime_error("Test finished, but did not start");
     tests[_id].update_on_finish(_duration, _result, errText);
