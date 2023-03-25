@@ -1,6 +1,6 @@
 # Test Runs Results Aggregation
 
-Implementation of a (pet) test results aggregator using C++ and ncurses libray. 
+Implementation of a (toy) test results aggregator using C++ and ncurses libray. 
 
 ## Functionality
 `aggregator` can disply your tests results, filter them by keywords and sort.
