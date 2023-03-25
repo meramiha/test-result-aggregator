@@ -9,6 +9,6 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 SET(CMAKE_CXX_COMPILER g++-12)
 
 include_directories(include)
-add_executable (aggregator src/test_t.cpp src/aggregator.cpp src/main.cpp src/utils.cpp src/ui.cpp)
+add_executable (aggregator src/test_t.cpp src/aggregator.cpp src/main.cpp src/utils.cpp src/ui.cpp src/ui-classes.cpp)
 
 target_link_libraries(aggregator ncurses)

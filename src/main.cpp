@@ -32,10 +32,6 @@ int main() {
         aggregator::process_line(line);
     }
 
-    for (auto [id, test] : aggregator::tests) {
-        std::cout << id << ": " << test << '\n';
-    }
-
     aggregator::aggregator a(aggregator::tests);
 
     aggregator::ui gui(a);
