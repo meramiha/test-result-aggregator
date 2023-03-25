@@ -5,6 +5,11 @@ Implementation of a (pet) test results aggregator using C++ and ncurses libray.
 ## Functionality
 `aggregator` can disply your tests results, filter them by keywords and sort.
 
+### Sort
+![](sort.gif)
+### Filter
+![](filter.gif)
+
 ## Build and run
 ### CMake
 
@@ -15,7 +20,8 @@ For it to work you need to have `ncurses` library on yout machine.
 Run this in the root of the project:
 
 ```sh
-cmake .
+cd build
+cmake ..
 cmake --build .
 ```
 
@@ -29,4 +35,10 @@ Example of tests results are in file `input.txt`.
 
 ### Docker
 
+You can use a docker image:
+
+```sh
+docker pull meramiha/aggregator
+docker run -it meramiha/aggregator
+```
 
