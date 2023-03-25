@@ -54,8 +54,7 @@ aggregator::SORT_OPTION SELECT::select_sort() {
     }
 }
 
-TESTS_TABLE::TESTS_TABLE(int nlines, int ncols, int begin_y, const std::vector<test_t> &_tests,
-                         const std::vector<bool> &_mask, const size_t &_displayed)
+TESTS_TABLE::TESTS_TABLE(int nlines, int ncols, int begin_y, const std::vector<test_t> &_tests, const std::vector<bool> &_mask, const size_t &_displayed)
     : height(nlines),
       width(ncols),
       tests(_tests),
@@ -229,4 +228,4 @@ BOTTOM_MENU::BOTTOM_MENU() {
     mvprintw(LINES - 1, 22, "Exit");
     attrset(A_NORMAL);
 }
-} // namespace aggregator
+}  // namespace aggregator

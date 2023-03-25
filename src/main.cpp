@@ -1,4 +1,5 @@
 #include <ncurses.h>
+#include <unistd.h>
 #include <exception>
 #include <iostream>
 #include <regex>
@@ -7,7 +8,6 @@
 #include "aggregator.h"
 #include "test_t.h"
 #include "ui.h"
-#include <unistd.h>
 
 namespace aggregator {
 extern std::unordered_map<uint32_t, test_t> tests;
