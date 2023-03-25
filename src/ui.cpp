@@ -1,9 +1,7 @@
 #include "ui.h"
 #include <ncurses.h>
 #include <algorithm>
-#include <iostream>
 #include "aggregator.h"
-#include "test_t.h"
 #include "ui-classes.h"
 
 namespace aggregator {
@@ -35,7 +33,7 @@ ui::ui(aggregator &_a)
     init();
 
     refresh();
-    TESTS_TABLE tests_table(height - 10, width, 0, 0, a.get_tests(), a.mask, a.displayed);
+    TESTS_TABLE tests_table(height - 10, width, 0, a.get_tests(), a.mask, a.displayed);
     tests_table.draw();
 
     SELECT select_menu(9, 20, height - 10, 0);
@@ -49,7 +47,7 @@ ui::ui(aggregator &_a)
 
     refresh();
 
-    BOTTOM_MENU bottom_menu{};
+    BOTTOM_MENU{};
 
     int ch;
     while (true) {
@@ -94,8 +92,6 @@ ui::ui(aggregator &_a)
                 break;
         }
     }
-
-    endwin();
 }
 
 }  // namespace aggregator

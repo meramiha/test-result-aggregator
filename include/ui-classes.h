@@ -23,7 +23,8 @@ public:
 
 struct TESTS_TABLE {
 public:
-    TESTS_TABLE(int, int, int, int, const std::vector<test_t> &, const std::vector<bool> &, const size_t &);
+    TESTS_TABLE(int nlines, int ncols, int begin_y, const std::vector<test_t> &_tests,
+                const std::vector<bool> &_mask, const size_t &_displayed);
 
     void draw();
     void scrll(int);
@@ -40,7 +41,7 @@ private:
     int start_y = 0;
 
     void print_test_header(WINDOW *, int, int);
-    void print_test(WINDOW *, int, int, const test_t &);
+    void print_test(WINDOW *pad, int y, const test_t &t);
 };
 struct SUMMARY {
 private:
@@ -69,4 +70,4 @@ private:
 struct BOTTOM_MENU {
     BOTTOM_MENU();
 };
-};  // namespace aggregator
+}  // namespace aggregator

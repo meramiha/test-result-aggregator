@@ -1,11 +1,7 @@
-#include <exception>
-#include <iostream>
 #include <regex>
 #include <stdexcept>
 #include <string>
 #include <unordered_map>
-#include <utility>
-#include "aggregator.h"
 #include "test_t.h"
 
 namespace aggregator {
@@ -65,4 +61,4 @@ void process_line(std::string line) {
     }
     throw std::runtime_error("Invalid form:'" + line + "'");
 }
-};  // namespace aggregator
+}  // namespace aggregator

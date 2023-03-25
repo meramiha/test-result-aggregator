@@ -4,7 +4,6 @@
 #include <iostream>
 #include "aggregator.h"
 #include "test_t.h"
-#include "ui.h"
 
 namespace aggregator {
 static std::unordered_map<TEST_RESULT, std::string> table = {
@@ -55,13 +54,8 @@ aggregator::SORT_OPTION SELECT::select_sort() {
     }
 }
 
-TESTS_TABLE::TESTS_TABLE(int nlines,
-                         int ncols,
-                         int begin_y,
-                         int begin_x,
-                         const std::vector<test_t> &_tests,
-                         const std::vector<bool> &_mask,
-                         const size_t &_displayed)
+TESTS_TABLE::TESTS_TABLE(int nlines, int ncols, int begin_y, const std::vector<test_t> &_tests,
+                         const std::vector<bool> &_mask, const size_t &_displayed)
     : height(nlines),
       width(ncols),
       tests(_tests),
@@ -76,11 +70,10 @@ void TESTS_TABLE::draw() {
     wclear(win);
 
     int y = 0;
-    int x = 2;
 
     for (size_t index = 0; index < tests.size(); ++index) {
         if (mask[index]) {
-            print_test(win, y++, 0, tests[index]);
+            print_test(win, y++, tests[index]);
         }
     }
 
@@ -107,13 +100,13 @@ void TESTS_TABLE::print_test_header(WINDOW *win, int y, int x) {
     mvwprintw(win, y, x + 53, "%-20s", "ERROR");
     wattrset(win, A_NORMAL);
 }
-void TESTS_TABLE::print_test(WINDOW *pad, int y, int x, const test_t &t) {
-    if (x + 28 > width)
+void TESTS_TABLE::print_test(WINDOW *pad, int y, const test_t &t) {
+    if (0 + 28 > width)
         return;
-    mvwprintw(pad, y, x + 0, "%-6d", t.id);
-    mvwprintw(pad, y, x + 6, "%-20s", t.name.c_str());
+    mvwprintw(pad, y, 0 + 0, "%-6d", t.id);
+    mvwprintw(pad, y, 0 + 6, "%-20s", t.name.c_str());
     if (t.testResult != UNKNOWN) {
-        mvwprintw(pad, y, x + 26, "%-12d", t.duration);
+        mvwprintw(pad, y, 0 + 26, "%-12d", t.duration);
     }
     switch (t.testResult) {
         case FAIL: {
@@ -128,11 +121,11 @@ void TESTS_TABLE::print_test(WINDOW *pad, int y, int x, const test_t &t) {
             wattrset(pad, COLOR_PAIR(4) | A_BOLD);
         }
     }
-    mvwprintw(pad, y, x + 38, "%-15s", table[t.testResult].c_str());
+    mvwprintw(pad, y, 0 + 38, "%-15s", table[t.testResult].c_str());
     wattrset(pad, A_NORMAL);
 
     if (!t.errorText.empty())
-        mvwprintw(pad, y, x + 53, "%-20s", t.errorText.c_str());
+        mvwprintw(pad, y, 0 + 53, "%-20s", t.errorText.c_str());
 }
 
 SUMMARY::SUMMARY(int nlines,
@@ -236,4 +229,4 @@ BOTTOM_MENU::BOTTOM_MENU() {
     mvprintw(LINES - 1, 22, "Exit");
     attrset(A_NORMAL);
 }
-};  // namespace aggregator
+} // namespace aggregator

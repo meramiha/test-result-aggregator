@@ -8,7 +8,6 @@ namespace aggregator {
 class aggregator {
 public:
     aggregator(std::unordered_map<uint32_t, test_t> &);
-    aggregator(std::unordered_map<uint32_t, test_t> &&);
     const std::vector<test_t> &get_tests();
     const std::map<TEST_RESULT, uint32_t> &get_summary();
 

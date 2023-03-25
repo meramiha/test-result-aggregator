@@ -21,4 +21,4 @@ public:
     bool contains(std::string);
     friend std::ostream &operator<<(std::ostream &os, const test_t &test);
 };
-};  // namespace aggregator
+} // namespace aggregator
