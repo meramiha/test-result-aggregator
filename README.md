@@ -40,6 +40,6 @@ You can use a docker image:
 
 ```sh
 docker pull meramiha/aggregator
-docker run -it meramiha/aggregator
+docker run -it --rm meramiha/aggregator
 ```
 
