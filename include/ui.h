@@ -7,7 +7,6 @@ namespace aggregator {
 class ui {
 public:
     ui(aggregator &);
-    aggregator::SORT_OPTION select_sort();
 
 private:
     void init();

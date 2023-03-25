@@ -13,9 +13,9 @@
 //
 #include <fcntl.h>
 #include <ncurses.h>
-#include <stdio.h>
-#include <stdlib.h>
 #include <unistd.h>
+#include <cstdio>
+#include <cstdlib>
 
 #define deb(x) std::cerr << #x << " = " << x << std::endl;
 
