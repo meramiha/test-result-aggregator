@@ -19,8 +19,7 @@ public:
         RESULT
     };
 
-    SORT_OPTION sort_by = ID;
-    void sort_tests();
+    void sort_tests(SORT_OPTION);
 
 private:
     void summarize();

@@ -10,14 +10,14 @@ aggregator::aggregator(std::unordered_map<uint32_t, test_t> &tests) {
     for (auto [id, test] : tests) {
         this->tests.push_back(test);
     }
-    sort_tests();
+    sort_tests(ID);
     summarize();
 }
 const std::vector<test_t> &aggregator::get_tests() {
     return this->tests;
 }
 
-void aggregator::sort_tests() {
+void aggregator::sort_tests(SORT_OPTION sort_by) {
     std::unordered_map<SORT_OPTION, bool (*)(const test_t &, const test_t &)> comparator = {
         {ID, [](const test_t &a, const test_t &b) {
              return a.id < b.id;

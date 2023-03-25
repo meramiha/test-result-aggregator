@@ -11,14 +11,18 @@ static std::unordered_map<TEST_RESULT, std::string> table = {
     {FAIL, "FAIL"},
     {UNKNOWN, "UNKNOWN"},
 };
-int selected_option = 0;
-std::vector<const char *> options = {
-    "ID",
-    "NAME",
-    "DURATION",
-    "RESULT"};
+
 struct SELECT {
+private:
+    std::vector<const char *> options = {
+        "ID",
+        "NAME",
+        "DURATION",
+        "RESULT"};
+    int selected_option = 0;
     WINDOW *win;
+
+public:
     SELECT(int nlines, int ncols, int begin_y, int begin_x)
         : win(newwin(nlines, ncols, begin_y, begin_x)) {
     }
@@ -86,15 +90,7 @@ void ui::init() {
     keypad(stdscr, true);
 }
 struct TESTS_TABLE {
-private:
-    int width;
-
-    const std::vector<test_t> &tests;
-    WINDOW *win;
-
 public:
-    int height;
-    int start_y = 0;
     TESTS_TABLE(int nlines, int ncols, int begin_y, int begin_x, const std::vector<test_t> &_tests)
         : height(nlines), width(ncols), win(newpad(tests.size(), width)), tests(_tests) {
         print_test_header(stdscr, 0, 0);
@@ -122,6 +118,12 @@ public:
     }
 
 private:
+    int height;
+    int width;
+    const std::vector<test_t> &tests;
+    WINDOW *win;
+    int start_y = 0;
+
     void print_test_header(WINDOW *win, int y, int x) {
         wattrset(win, COLOR_PAIR(3) | A_REVERSE);
         for (int i = 1; i < width; ++i) {
@@ -210,15 +212,20 @@ ui::ui(aggregator &_a)
     refresh();
     wrefresh(filters);
 
+    // TODO options list
+    mvprintw(height - 1, 5, "F6");
+    attrset(COLOR_PAIR(3) | A_REVERSE);
+    mvprintw(height - 1, 7, "SORT");
+    attrset(A_NORMAL);
+    //
+
     int ch;
     while (true) {
         ch = getch();
         mvaddch(height - 1, 1, ch);
         switch (ch) {
             case KEY_F(6): {
-                mvprintw(height - 1, 1, "F6 pressed");
-                a.sort_by = select_menu.select_sort();
-                a.sort_tests();
+                a.sort_tests(select_menu.select_sort());
 
                 tests_table.draw();
 
