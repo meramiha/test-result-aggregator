@@ -20,6 +20,7 @@ For it to work you need to have `ncurses` library on yout machine.
 Run this in the root of the project:
 
 ```sh
+mkdir build
 cd build
 cmake ..
 cmake --build .
