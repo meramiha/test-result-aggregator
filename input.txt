@@ -1,0 +1,75 @@
+testStarted id="5" name="Test Name"
+
+testStarted id="6" name="Test Name"
+
+testFinished id="5" duration="100" result=FAIL error="WA"
+
+testStarted id="7" name="Test Name"
+testFinished id="6" duration="120" result=SUCCESS
+testFinished id="7" duration="189" result=FAIL error="TL"
+
+testStarted id="8" name="Unfinished test"
+
+testStarted id="1235" name="Test Name"
+
+testStarted id="1236" name="Test Name"
+
+testFinished id="1235" duration="100" result=FAIL error="WA"
+
+testStarted id="1237" name="Test Name"
+testFinished id="1236" duration="120" result=SUCCESS
+testFinished id="1237" duration="189" result=FAIL error="TL"
+
+testStarted id="1238" name="Unfinished test"
+
+testStarted id="2345" name="Test Name"
+
+testStarted id="2346" name="Test Name"
+
+testFinished id="2345" duration="100" result=FAIL error="Somthing went wrong"
+
+testStarted id="2347" name="Test Name"
+testFinished id="2346" duration="120" result=SUCCESS
+testFinished id="2347" duration="189" result=FAIL error="TL"
+
+testStarted id="2348" name="Unfinished test"
+
+testStarted id="3455" name="Test Name"
+
+testStarted id="3456" name="Test Name"
+
+testFinished id="3455" duration="100" result=FAIL error="WA"
+
+testStarted id="3457" name="Test Name"
+testFinished id="3456" duration="120" result=SUCCESS
+testFinished id="3457" duration="189" result=FAIL error="TL"
+
+testStarted id="3458" name="Unfinished test"
+
+testStarted id="1255" name="Test Name"
+
+testStarted id="1256" name="Test Name"
+
+testFinished id="1255" duration="100" result=FAIL error="Assertion fail"
+
+testStarted id="1257" name="Test Name"
+testFinished id="1256" duration="120" result=SUCCESS
+testFinished id="1257" duration="189" result=FAIL error="TL"
+
+testStarted id="1258" name="Unfinished test"
+
+testStarted id="6545" name="Test Name"
+
+testStarted id="6546" name="Test Name"
+
+testFinished id="6545" duration="100" result=FAIL error="WA"
+
+testStarted id="6547" name="Test Name"
+testFinished id="6546" duration="120" result=SUCCESS
+testFinished id="6547" duration="189" result=FAIL error="TL"
+
+testStarted id="6548" name="Unfinished test"
+
+
+testStarted id="42" name="Ultimate test"
+testFinished id="42" duration="42" result=SUCCESS

@@ -1,4 +1,5 @@
 #include "test_t.h"
+#include <algorithm>
 #include <chrono>
 #include <iostream>
 #include <string>
@@ -19,5 +20,15 @@ std::ostream &operator<<(std::ostream &os, const test_t &test) {
     if (!test.errorText.empty())
         os << ", error='" << test.errorText << "'";
     return os;
+}
+static bool case_ins_search(const std::string &text, const std::string &string) {
+    return std::search(text.begin(), text.end(), string.begin(), string.end(),
+                       [](const char a, const char b) {
+                           return std::toupper(a) == std::toupper(b);
+                       }) != text.end();
+}
+
+bool test_t::contains(std::string filter) {
+    return case_ins_search(name, filter) || case_ins_search(errorText, filter);
 }
 }  // namespace aggregator

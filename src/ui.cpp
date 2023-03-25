@@ -32,11 +32,11 @@ public:
 
         for (size_t i = 0; i < options.size(); ++i) {
             if (i == selected_option) {
-                wattron(win, A_REVERSE);
+                wattron(win, A_REVERSE | COLOR_PAIR(3));
             }
             mvwprintw(win, i + 1, 1, options[i]);
             if (i == selected_option) {
-                wattroff(win, A_REVERSE);
+                wattroff(win, A_REVERSE | COLOR_PAIR(3));
             }
         }
 
@@ -91,8 +91,19 @@ void ui::init() {
 }
 struct TESTS_TABLE {
 public:
-    TESTS_TABLE(int nlines, int ncols, int begin_y, int begin_x, const std::vector<test_t> &_tests)
-        : height(nlines), width(ncols), win(newpad(tests.size(), width)), tests(_tests) {
+    TESTS_TABLE(int nlines,
+                int ncols,
+                int begin_y,
+                int begin_x,
+                const std::vector<test_t> &_tests,
+                const std::vector<bool> &_mask,
+                const size_t &_displayed)
+        : height(nlines),
+          width(ncols),
+          tests(_tests),
+          mask(_mask),
+          displayed(_displayed),
+          win(newpad(tests.size(), width)) {
         print_test_header(stdscr, 0, 0);
     }
 
@@ -103,15 +114,17 @@ public:
         int y = 0;
         int x = 2;
 
-        for (const auto &test : tests) {
-            print_test(win, y++, 0, test);
+        for (size_t index = 0; index < tests.size(); ++index) {
+            if (mask[index]) {
+                print_test(win, y++, 0, tests[index]);
+            }
         }
 
         refresh();
         prefresh(win, start_y, 0, 1, 0, height - 1, COLS);
     }
     void scrll(int shift) {
-        if (start_y + shift > 0 && start_y + shift < (int)tests.size() - height + 1) {
+        if (start_y + shift > 0 && start_y + shift < (int)displayed - height + 1) {
             start_y += shift;
             prefresh(win, start_y, 0, 1, 0, height - 1, COLS);
         }
@@ -120,7 +133,11 @@ public:
 private:
     int height;
     int width;
+
     const std::vector<test_t> &tests;
+
+    const std::vector<bool> &mask;
+    const size_t &displayed;
     WINDOW *win;
     int start_y = 0;
 
@@ -170,59 +187,139 @@ private:
     int height;
     int width;
     WINDOW *win;
-    std::map<TEST_RESULT, uint32_t> &summary;
+    const std::map<TEST_RESULT, uint32_t> &summary;
 
 public:
-    SUMMARY(int nlines, int ncols, int begin_y, int begin_x, std::map<TEST_RESULT, uint32_t> &_summary)
-        : height(nlines), width(ncols), win(newwin(nlines, ncols, begin_y, begin_x)), summary(_summary) {
+    SUMMARY(int nlines,
+            int ncols,
+            int begin_y,
+            int begin_x,
+            const std::map<TEST_RESULT, uint32_t> &_summary)
+        : height(nlines),
+          width(ncols),
+          win(newwin(nlines, ncols, begin_y, begin_x)),
+          summary(_summary) {
     }
     void draw() {
         wclear(win);
         box(win, 0, 0);
         mvwprintw(win, 0, 1, "Summary");
 
-        int y = 1;
+        int y = 2;
+        size_t sum = 0;
         for (auto [result_type, count] : summary) {
+            sum += count;
             wattron(win, COLOR_PAIR(static_cast<int>(result_type)) | A_BOLD);
             mvwprintw(win, y++, 1, "%s:%-10d", table[result_type].c_str(), count);
             wattroff(win, COLOR_PAIR(static_cast<int>(result_type)) | A_BOLD);
         }
 
+        mvwprintw(win, 1, 1, "%s:%-10d", "TOTAL", sum);
+
         wrefresh(win);
     }
+};
+
+struct FILTERS {
+public:
+    FILTERS(int nlines, int ncols, int begin_y, int begin_x)
+        : height(nlines), width(ncols), win(newwin(nlines, ncols, begin_y, begin_x)) {
+    }
+    void draw() {
+        wclear(win);
+        box(win, 0, 0);
+        mvwprintw(win, 0, 1, "Filters");
+        wattron(win, A_REVERSE);
+        mvwprintw(win, 1, 1, "YOUR FILTER:");
+        wattroff(win, A_REVERSE);
+        wrefresh(win);
+    }
+    std::string get_filter() {
+        draw();
+        int y = 2;
+        int x = 1;
+
+        std::string filter;
+        while (true) {
+            int ch = getch();
+            curs_set(1);
+            switch (ch) {
+                case 27:
+                case KEY_EXIT: {
+                    draw();
+                    curs_set(0);
+                    return "";
+                }
+                case 10:
+                case KEY_ENTER: {
+                    curs_set(0);
+                    return filter;
+                }
+                case 8:
+                case 127: {
+                    if (!filter.empty()) {
+                        mvwaddch(win, y, --x, ' ');
+                        wmove(win, y, x);
+                        filter.pop_back();
+                    }
+                    wrefresh(win);
+                    break;
+                }
+
+                default: {
+                    if (std::isprint(ch) && x < width - 1) {
+                        mvwaddch(win, y, x++, ch);
+                        filter.push_back(ch);
+                    }
+                    wrefresh(win);
+                    break;
+                }
+            }
+        }
+    }
+
+private:
+    int height;
+    int width;
+    WINDOW *win;
 };
 ui::ui(aggregator &_a)
     : a(_a) {
     init();
 
     refresh();
-    TESTS_TABLE tests_table(height - 10, width, 0, 0, a.get_tests());
+    TESTS_TABLE tests_table(height - 10, width, 0, 0, a.get_tests(), a.mask, a.displayed);
     tests_table.draw();
 
     SELECT select_menu(9, 20, height - 10, 0);
     select_menu.draw();
 
-    WINDOW *filters = newwin(9, 40, height - 10, 20);
-    box(filters, 0, 0);
-    mvwprintw(filters, 0, 1, "Filters");
+    // WINDOW *filters = newwin(9, 40, height - 10, 20);
+    FILTERS filters(9, 40, height - 10, 20);
+    filters.draw();
 
     SUMMARY summary(9, 40, height - 10, width - 40, a.get_summary());
     summary.draw();
 
     refresh();
-    wrefresh(filters);
 
     // TODO options list
-    mvprintw(height - 1, 5, "F6");
+
+    mvprintw(height - 1, 5, "F4");
     attrset(COLOR_PAIR(3) | A_REVERSE);
-    mvprintw(height - 1, 7, "SORT");
+    mvprintw(height - 1, 7, "FILTER");
+    attrset(A_NORMAL);
+
+    mvprintw(height - 1, 13, "F6");
+    attrset(COLOR_PAIR(3) | A_REVERSE);
+    mvprintw(height - 1, 15, "SORT");
     attrset(A_NORMAL);
     //
 
     int ch;
     while (true) {
         ch = getch();
-        mvaddch(height - 1, 1, ch);
+        // mvaddch(height - 1, 1, ch);
         switch (ch) {
             case KEY_F(6): {
                 a.sort_tests(select_menu.select_sort());
@@ -231,6 +328,14 @@ ui::ui(aggregator &_a)
 
                 refresh();
                 doupdate();
+
+                break;
+            }
+            case KEY_F(4): {
+                a.filter_tests(filters.get_filter());
+                tests_table.draw();
+                summary.draw();
+                refresh();
 
                 break;
             }

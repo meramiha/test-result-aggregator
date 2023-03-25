@@ -10,7 +10,7 @@ public:
     aggregator(std::unordered_map<uint32_t, test_t> &);
     aggregator(std::unordered_map<uint32_t, test_t> &&);
     const std::vector<test_t> &get_tests();
-    std::map<TEST_RESULT, uint32_t> &get_summary();
+    const std::map<TEST_RESULT, uint32_t> &get_summary();
 
     enum SORT_OPTION {
         ID,
@@ -20,9 +20,13 @@ public:
     };
 
     void sort_tests(SORT_OPTION);
+    void filter_tests(std::string);  // TODO
+    size_t displayed;
+    std::vector<bool> mask;
 
 private:
     void summarize();
+
     std::vector<test_t> tests;
     std::map<TEST_RESULT, uint32_t> summary;
 };

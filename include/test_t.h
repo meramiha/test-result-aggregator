@@ -18,6 +18,7 @@ public:
     test_t() = default;
     test_t(uint32_t, std::string);
     void update_on_finish(std::chrono::milliseconds, TEST_RESULT, std::string);
+    bool contains(std::string);
     friend std::ostream &operator<<(std::ostream &os, const test_t &test);
 };
 };  // namespace aggregator

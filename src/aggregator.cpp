@@ -5,11 +5,13 @@
 #include "test_t.h"
 
 namespace aggregator {
-aggregator::aggregator(std::unordered_map<uint32_t, test_t> &tests) {
-    this->tests.reserve(tests.size());
-    for (auto [id, test] : tests) {
-        this->tests.push_back(test);
+aggregator::aggregator(std::unordered_map<uint32_t, test_t> &_tests) {
+    tests.reserve(tests.size());
+    for (auto [id, test] : _tests) {
+        tests.push_back(test);
     }
+    mask.resize(tests.size(), true);
+    displayed = tests.size();
     sort_tests(ID);
     summarize();
 }
@@ -33,14 +35,28 @@ void aggregator::sort_tests(SORT_OPTION sort_by) {
          }}};
     std::stable_sort(tests.begin(), tests.end(), comparator[sort_by]);
 }
-std::map<TEST_RESULT, uint32_t> &aggregator::get_summary() {
+
+const std::map<TEST_RESULT, uint32_t> &aggregator::get_summary() {
     return summary;
 }
+
+void aggregator::filter_tests(std::string filter) {
+    displayed = 0;
+    for (size_t index = 0; index < tests.size(); ++index) {
+        mask[index] = tests[index].contains(filter);
+        displayed++;
+    }
+    summarize();
+}
 void aggregator::summarize() {
-    for (const auto &test : tests) {
-        if (!summary.contains(test.testResult))
-            summary[test.testResult] = 0;
-        summary[test.testResult]++;
+    summary.clear();
+    for (size_t index = 0; index < tests.size(); ++index) {
+        if (!summary.contains(tests[index].testResult)) {
+            summary[tests[index].testResult] = 0;
+        }
+        if (mask[index]) {
+            summary[tests[index].testResult]++;
+        }
     }
 }
 }  // namespace aggregator
