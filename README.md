@@ -13,9 +13,9 @@ Implementation of a (pet) test results aggregator using C++ and ncurses libray.
 ## Build and run
 ### CMake
 
-Note that this option is only possible on Linux and MacOS.
+Note that this option is only possible on linux and mac.
 
-For it to work you need to have `ncurses` library on yout machine.
+For it to work you need to have `ncurses` library on your machine.
 
 Run this in the root of the project:
 
