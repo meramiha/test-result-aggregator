@@ -31,7 +31,7 @@ Example of tests results are in file `input.txt`.
 `aggregator` takes the tests results from standart input, so just run:
 
 ```sh
-./aggregator < input.txt
+./aggregator < ../input.txt
 ```
 
 ### Docker
